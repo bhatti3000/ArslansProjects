@@ -13,7 +13,6 @@ git commit -m $commitMessage
 # Push to the current branch automatically
 #$branch = git rev-parse --abbrev-ref HEAD
 #git push origin $branch
-
 git push origin main
 
 # Your main script logic goes here
