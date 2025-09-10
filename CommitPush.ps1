@@ -1,7 +1,7 @@
 # Save this as Push-To-GitHub.ps1
 
 # Use current location (the folder where you run the script)
-Set-Location (Get-Location)
+#Set-Location (Get-Location)
 
 # Stage all changes
 git add .
