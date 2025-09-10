@@ -15,4 +15,9 @@ git commit -m $commitMessage
 git branch -M main
 git push origin main --force
 #wait to press a key
+
+git rm --cached CommitPush.ps1
+git commit -m "Stop tracking oldfile.txt"
+git push origin main
+
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
