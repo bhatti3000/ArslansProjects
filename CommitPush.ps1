@@ -14,3 +14,5 @@ git commit -m $commitMessage
 # Push to the current branch automatically
 git branch -M main
 git push -u origin main
+#wait to press a key
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
