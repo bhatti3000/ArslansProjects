@@ -47,6 +47,23 @@ Deploying voting-app on Kubernetes cluster
 
 Same procedure can be used while deploying the app on kubernetes using deployment
 	kubectl apply -f  AppDeployment/.
+	
+Deployment Procedure for Azure Kubernetes Service (AKS)
+------------------------------------------------------
+1. Established the Votingapp-resourcegroup within Azure DevOps to serve as the logical container for all deployment resources, ensuring organized management and access control.
+
+2. Conneting local kubectl (Kubernetes command-line tool) to a remote Azure Kubernetes Service (AKS) cluster
+	az aks get-credentials --resource-group Votingapp-resourcegroup --name example-voting-app
+	
+3. Cloned the application source code repository from the designated Git URL to the local Azure Cloud Shell environment to obtain the latest version of the application artifacts and deployment manifests.
+
+4. Executed the necessary Kubernetes manifest files (.yaml) to deploy the application components to the AKS cluster, creating all required pods, services, and deployments.
+
+5. Verified successful deployment by retrieving the external IP address and port of the vote service using:
+kubectl get service vote
+The application was confirmed operational by accessing it through a web browser at the provided endpoint (<IP-Address>:<port>).
+
+
    
 
 This project was made according to Udemy course "Kubernetes for the Absolute Beginners - Hands-on"
