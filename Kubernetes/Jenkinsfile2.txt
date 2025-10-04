@@ -2,7 +2,7 @@ pipeline {
   agent any
   options { timestamps() }
   environment {
-    REGISTRY = 'myacr123.azurecr.io'   // change to your ACR login server
+    REGISTRY = 'bhattiacr20314.azurecr.io'   // change to your ACR login server
     IMAGE    = 'voting-app'            // your image name
     CREDS    = 'acr-creds'             // Jenkins credentialsId for ACR
     TAG      = "${env.BUILD_NUMBER}"
