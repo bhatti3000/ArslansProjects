@@ -1,0 +1,42 @@
+pipeline {
+  agent any
+  options { timestamps() }
+  environment {
+    REGISTRY = 'myacr123.azurecr.io'   // change to your ACR login server
+    IMAGE    = 'voting-app'            // your image name
+    CREDS    = 'acr-creds'             // Jenkins credentialsId for ACR
+    TAG      = "${env.BUILD_NUMBER}"
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Unit tests') {
+      steps {
+        sh 'echo "TODO: run your tests here (npm test / pytest / mvn test)"'
+      }
+    }
+    stage('Build image') {
+      steps {
+        sh '''
+          docker build -t $REGISTRY/$IMAGE:$TAG -t $REGISTRY/$IMAGE:latest .
+        '''
+      }
+    }
+    stage('Login & Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+          sh '''
+            echo $P | docker login $REGISTRY -u $U --password-stdin
+            docker push $REGISTRY/$IMAGE:$TAG
+            docker push $REGISTRY/$IMAGE:latest
+            docker logout $REGISTRY
+          '''
+        }
+      }
+    }
+  }
+  post {
+    always { sh 'docker image prune -f || true' }
+  }
+}
