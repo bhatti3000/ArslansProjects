@@ -1,42 +1,69 @@
 pipeline {
   agent any
-  options { timestamps() }
+  options { timestamps(); parallelsAlwaysFailFast() }   // stop other branches if one fails
+
   environment {
-    REGISTRY = 'bhattiacr20314.azurecr.io'   // change to your ACR login server
-    IMAGE    = 'voting-app'            // your image name
-    CREDS    = 'acr-creds'             // Jenkins credentialsId for ACR
+    REGISTRY = 'bhattiacr20314.azurecr.io'
+    CREDS    = 'acr-creds'
     TAG      = "${env.BUILD_NUMBER}"
+    VOTE_DIR   = 'AppHTML/vote'
+    WORKER_DIR = 'AppHTML/worker'
+    RESULT_DIR = 'AppHTML/result'
   }
+
   stages {
-    stage('Checkout') {
-      steps { checkout scm }
-    }
-    stage('Unit tests') {
-      steps {
-        sh 'echo "TODO: run your tests here (npm test / pytest / mvn test)"'
-      }
-    }
-    stage('Build image') {
-      steps {
-        sh '''
-          docker build -t $REGISTRY/$IMAGE:$TAG -t $REGISTRY/$IMAGE:latest .
-        '''
-      }
-    }
-    stage('Login & Push') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
-          sh '''
-            echo $P | docker login $REGISTRY -u $U --password-stdin
-            docker push $REGISTRY/$IMAGE:$TAG
-            docker push $REGISTRY/$IMAGE:latest
-            docker logout $REGISTRY
-          '''
+    stage('Checkout') { steps { checkout scm } }
+    stage('Build & Push images (parallel)') {
+      parallel {
+        stage('vote') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+              sh '''
+                set -e
+                docker build -f "$VOTE_DIR/Dockerfile"   -t "$REGISTRY/vote:$TAG"   -t "$REGISTRY/vote:latest"   "$VOTE_DIR"
+                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
+                docker push "$REGISTRY/vote:$TAG"
+                docker push "$REGISTRY/vote:latest"
+                docker logout "$REGISTRY"
+              '''
+            }
+          }
+        }
+        stage('worker') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+              sh '''
+                set -e
+                docker build -f "$WORKER_DIR/Dockerfile" -t "$REGISTRY/worker:$TAG" -t "$REGISTRY/worker:latest" "$WORKER_DIR"
+                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
+                docker push "$REGISTRY/worker:$TAG"
+                docker push "$REGISTRY/worker:latest"
+                docker logout "$REGISTRY"
+              '''
+            }
+          }
+        }
+        stage('result') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+              sh '''
+                set -e
+                docker build -f "$RESULT_DIR/Dockerfile" -t "$REGISTRY/result:$TAG" -t "$REGISTRY/result:latest" "$RESULT_DIR"
+                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
+                docker push "$REGISTRY/result:$TAG"
+                docker push "$REGISTRY/result:latest"
+                docker logout "$REGISTRY"
+              '''
+            }
+          }
         }
       }
     }
   }
+
   post {
-    always { sh 'docker image prune -f || true' }
+    success { echo '✅ Pipeline PASSED' }
+    failure { echo '❌ Pipeline FAILED' }
+    always  { sh 'docker image prune -f || true' }
   }
 }
