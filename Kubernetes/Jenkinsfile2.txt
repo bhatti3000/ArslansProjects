@@ -52,6 +52,19 @@ pipeline {
 
     stage('Build & Push images (parallel)') {
       parallel {
+        stage('Repo debug') {
+          steps {
+            sh '''
+              set -e
+              pwd
+              git submodule status || true
+              cat .gitmodules || true
+              find . -maxdepth 3 -type f -name Dockerfile -print | sort || true
+              ls -la AppHTML || true
+            '''
+          }
+        }
+
         stage('vote') {
           steps {
             dir(env.BASE_DIR) 
