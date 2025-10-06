@@ -10,7 +10,7 @@ pipeline {
   environment {
     IMG_TAG          = "build-${env.BUILD_NUMBER}"
     BASE_DIR         = '.'
-    APP_DIR          = '/AppHTML'
+    APP_DIR          = '/Kubernetes/AppHTML'
     // 👇 make the param available to /bin/sh as $ACR_LOGIN_SERVER
     ACR_LOGIN_SERVER = "${params.ACR_LOGIN_SERVER}"
   }
@@ -57,25 +57,27 @@ pipeline {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
-                test -d "AppHTML/vote" || { echo "Missing AppHTML/vote"; exit 1; }
-                docker build -f "AppHTML/vote/Dockerfile" \
+                test -d "${APP_DIR}/vote" || { echo "Missing ${APP_DIR}/vote"; exit 1; }
+                docker build -f "${APP_DIR}/vote/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/vote:latest" \
-                  "AppHTML/vote"
+                  "${APP_DIR}/vote"
                 docker push "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/vote:latest"
               '''
             }
           }
         }
+        
+        /*
         stage('worker') {
           steps {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
-                test -d "AppHTML/worker" || { echo "Missing AppHTML/worker"; exit 1; }
-                docker build -f "AppHTML/worker/Dockerfile" \
+                test -d "${APP_DIR}/worker" || { echo "Missing ${APP_DIR}/worker"; exit 1; }
+                docker build -f "${APP_DIR}/worker/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/worker:latest" \
-                  "AppHTML/worker"
+                  "${APP_DIR}/worker"
                 docker push "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/worker:latest"
               '''
@@ -94,7 +96,7 @@ pipeline {
                 docker push "${ACR_LOGIN_SERVER}/result:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/result:latest"
               '''
-            }
+            }*/
           }
         }
       }
