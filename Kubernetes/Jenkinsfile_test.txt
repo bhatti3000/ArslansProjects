@@ -1,30 +1,20 @@
-pipeline {
-  agent any
-  options { timestamps(); parallelsAlwaysFailFast() }   // stop other branches if one fails
-
-  environment {
-    REGISTRY = 'bhattiacr20314.azurecr.io'
-    CREDS    = 'acr-creds'
-    TAG      = "${env.BUILD_NUMBER}"
-    VOTE_DIR   = 'AppHTML/vote'
-    WORKER_DIR = 'AppHTML/worker'
-    RESULT_DIR = 'AppHTML/result'
-  }
-
-  stages {
-    stage('Preflight') {
-      steps {
-        sh '''
-          set -e
-          echo "REGISTRY=$REGISTRY"
-          docker version >/dev/null
-        '''
-      }
-    }
-
-  post {
-    success { echo '✅ Pipeline PASSED' }
-    failure { echo '❌ Pipeline FAILED' }
-    always  { sh 'docker image prune -f || true' }
-  }
-}
+1  pipeline {
+2    agent any
+3    stages {
+4      stage('Build') {
+5        steps {
+6          sh 'make build'
+7        }
+8      }
+9      stage('Test') {
+10       steps {
+11         sh 'make test'
+12       }
+13     }
+14   }
+15   post {
+16     always {
+17       echo 'Pipeline finished'
+18     }
+19   }
+20 }
