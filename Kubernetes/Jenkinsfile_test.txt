@@ -3,16 +3,10 @@ pipeline {
   options { timestamps() }
 
   parameters {
-    string(name: 'ACR_LOGIN_SERVER',
-           defaultValue: 'bhattiacr20314.azurecr.io',
-           description: 'Your ACR login server, e.g. bhattiacr20314.azurecr.io')
-
-    // Create a Jenkins credential (Kind: Username with password) that can docker-login to ACR,
-    // then set its ID as the defaultValue below (e.g., "acr-creds")
-    credentials(name: 'ACR_CREDENTIALS',
-                defaultValue: 'acr-creds',
-                description: 'Username/Password that can docker login to ACR',
-                credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl')
+    string(name: 'ACR_LOGIN_SERVER', defaultValue: 'bhattiacr20314.azurecr.io', description: 'e.g. myregistry.azurecr.io')
+    credentials(name: 'ACR_CREDENTIALS', defaultValue: 'acr-creds',
+      description: 'ACR username/password (admin user or SP with AcrPush)',
+      credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl')
   }
 
   environment {
@@ -21,11 +15,7 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
+    stage('Checkout') { steps { checkout scm } }
 
     stage('Tooling check') {
       steps {
@@ -39,13 +29,10 @@ pipeline {
 
     stage('Login to ACR') {
       steps {
-        withCredentials([usernamePassword(
-          credentialsId: params.ACR_CREDENTIALS,
-          usernameVariable: 'REG_USER',
-          passwordVariable: 'REG_PASS'
-        )]) {
+        withCredentials([usernamePassword(credentialsId: params.ACR_CREDENTIALS,
+                          usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
           sh '''
-            set -euo pipefail
+            set -eu
             echo "$REG_PASS" | docker login "${ACR_LOGIN_SERVER}" --username "$REG_USER" --password-stdin
             echo "Authenticated to ${ACR_LOGIN_SERVER}"
           '''
@@ -56,24 +43,13 @@ pipeline {
     stage('Push & Pull smoke test') {
       steps {
         sh '''
-          set -euo pipefail
-
-          # Use a tiny base image; change if your environment restricts public pulls
+          set -eu
           BASE_IMAGE=busybox:latest
-
-          echo "Pulling base image: ${BASE_IMAGE}"
           docker pull "${BASE_IMAGE}"
-
           TARGET_IMAGE="${ACR_LOGIN_SERVER}/${TEST_REPO}:${TEST_TAG}"
-          echo "Tagging as ${TARGET_IMAGE}"
           docker tag "${BASE_IMAGE}" "${TARGET_IMAGE}"
-
-          echo "Pushing ${TARGET_IMAGE}"
           docker push "${TARGET_IMAGE}"
-
-          echo "Pulling back ${TARGET_IMAGE} to verify accessibility"
           docker pull "${TARGET_IMAGE}"
-
           echo "ACR push/pull verification succeeded for ${TARGET_IMAGE}"
         '''
       }
@@ -92,17 +68,10 @@ pipeline {
 
   post {
     always {
-      // Try to log out regardless of stage outcome
-      sh '''
-        docker logout "${ACR_LOGIN_SERVER}" || true
-      '''
+      sh 'docker logout "${ACR_LOGIN_SERVER}" || true'
       echo 'Pipeline finished.'
     }
-    success {
-      echo 'ACR connectivity & auth: OK (push/pull succeeded).'
-    }
-    failure {
-      echo 'ACR connectivity/auth test failed. Check previous stage logs.'
-    }
+    success { echo 'ACR connectivity & auth: OK (push/pull succeeded).' }
+    failure { echo 'ACR connectivity/auth test failed. Check previous stage logs.' }
   }
 }
