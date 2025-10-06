@@ -54,7 +54,8 @@ pipeline {
       parallel {
         stage('vote') {
           steps {
-            dir(env.BASE_DIR) {
+            //dir(env.BASE_DIR) 
+            {
               sh '''
                 set -eu
                 WORKDIR="AppHTML/vote"
