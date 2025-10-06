@@ -52,17 +52,30 @@ pipeline {
 
     stage('Build & Push images (parallel)') {
       parallel {
-        stage('Repo debug') {
+        stage('Checkout') {
           steps {
-            sh '''
-              set -e
-              pwd
-              git submodule status || true
-              cat .gitmodules || true
-              find . -maxdepth 3 -type f -name Dockerfile -print | sort || true
-              ls -la AppHTML || true
-            '''
+            checkout([
+              $class: 'GitSCM',
+              branches: [[name: '*/main']],
+              userRemoteConfigs: [[
+                url: 'https://github.com/bhatti3000/ArslansProjects.git',
+                credentialsId: 'Github_credentials'
+              ]],
+              extensions: [
+                [$class: 'SubmoduleOption',
+                  disableSubmodules: false,
+                  recursiveSubmodules: true,
+                  parentCredentials: true,   // use same creds for private submodules
+                  reference: '',
+                  trackingSubmodules: false,
+                  shallow: false
+                ]
+              ]
+            ])
+            // belt & suspenders:
+            sh 'git submodule update --init --recursive'
           }
+        }
         }
 
         stage('vote') {
