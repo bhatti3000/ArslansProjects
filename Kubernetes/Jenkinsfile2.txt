@@ -6,9 +6,9 @@ pipeline {
     REGISTRY = 'bhattiacr20314.azurecr.io'
     CREDS    = 'acr-creds'
     TAG      = "${env.BUILD_NUMBER}"
-    VOTE_DIR   = 'AppHTML/vote'
-    WORKER_DIR = 'AppHTML/worker'
-    RESULT_DIR = 'AppHTML/result'
+    VOTE_DIR   = 'AppHTML/vote/*'
+    WORKER_DIR = 'AppHTML/worker/*'
+    RESULT_DIR = 'AppHTML/result/*'
   }
 
   stages {
