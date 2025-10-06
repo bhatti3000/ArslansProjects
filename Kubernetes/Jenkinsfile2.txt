@@ -52,6 +52,7 @@ pipeline {
 
     stage('Build & Push images (parallel)') {
       parallel {
+
         stage('Checkout') {
           steps {
             checkout([
@@ -76,7 +77,8 @@ pipeline {
             sh 'git submodule update --init --recursive'
           }
         }
-        }
+
+
 
         stage('vote') {
           steps {
