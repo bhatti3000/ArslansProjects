@@ -96,9 +96,10 @@ pipeline {
                 docker push "${ACR_LOGIN_SERVER}/result:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/result:latest"
               '''
-            }*/
+            }
           }
         }
+        */
       }
     }
   }
