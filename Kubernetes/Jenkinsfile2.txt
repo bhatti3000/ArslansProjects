@@ -1,11 +1,23 @@
 pipeline {
   agent any
-  options { timestamps(); parallelsAlwaysFailFast() }   // stop other branches if one fails
+  options {
+    timestamps()
+    skipDefaultCheckout(true)   // avoid double checkout noise
+  }
+
+  parameters {
+    string(name: 'ACR_LOGIN_SERVER',
+           defaultValue: 'bhattiacr20314.azurecr.io',
+           description: 'ACR login server, e.g. myregistry.azurecr.io')
+    string(name: 'ACR_CREDENTIALS_ID',
+           defaultValue: 'acr-creds',
+           description: 'Jenkins Credentials ID (Username/Password) with ACR push rights')
+  }
 
   environment {
-    IMG_TAG   = "build-${env.BUILD_NUMBER}"
-    BASE_DIR  = 'Kubernetes'      // change to '' if your Dockerfiles are at repo root
-    APP_DIR   = 'AppHTML'         // service dirs live under BASE_DIR/APP_DIR
+    IMG_TAG  = "build-${env.BUILD_NUMBER}"
+    BASE_DIR = 'Kubernetes'
+    APP_DIR  = 'AppHTML'
   }
 
   stages {
@@ -23,10 +35,23 @@ pipeline {
       }
     }
 
+    stage('Validate inputs') {
+      steps {
+        script {
+          if (!params.ACR_LOGIN_SERVER?.trim()) {
+            error 'ACR_LOGIN_SERVER is empty.'
+          }
+          if (!params.ACR_CREDENTIALS_ID?.trim()) {
+            error 'ACR_CREDENTIALS_ID is empty. Set it to your Jenkins credentials ID.'
+          }
+        }
+      }
+    }
+
     stage('Login to ACR') {
       steps {
         withCredentials([usernamePassword(
-          credentialsId: params.ACR_CREDENTIALS,
+          credentialsId: params.ACR_CREDENTIALS_ID,
           usernameVariable: 'REG_USER',
           passwordVariable: 'REG_PASS'
         )]) {
@@ -96,12 +121,13 @@ pipeline {
   post {
     always {
       sh '''
+        set -e
         docker logout "${ACR_LOGIN_SERVER}" || true
         docker image prune -f || true
       '''
       echo 'Pipeline finished.'
     }
     success { echo '✅ ACR build & push succeeded for vote/worker/result.' }
-    failure { echo '❌ Pipeline FAILED. Most common cause: wrong paths. See stage logs.' }
+    failure { echo '❌ Pipeline FAILED. See stage logs (credentials/paths are common causes).' }
   }
 }
