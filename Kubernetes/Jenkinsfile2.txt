@@ -3,56 +3,88 @@ pipeline {
   options { timestamps(); parallelsAlwaysFailFast() }   // stop other branches if one fails
 
   environment {
-    REGISTRY = 'bhattiacr20314.azurecr.io'
-    CREDS    = 'acr-creds'
-    TAG      = "${env.BUILD_NUMBER}"
-    VOTE_DIR   = 'AppHTML/vote/*'
-    WORKER_DIR = 'AppHTML/worker/*'
-    RESULT_DIR = 'AppHTML/result/*'
+    IMG_TAG   = "build-${env.BUILD_NUMBER}"
+    BASE_DIR  = 'Kubernetes'      // change to '' if your Dockerfiles are at repo root
+    APP_DIR   = 'AppHTML'         // service dirs live under BASE_DIR/APP_DIR
   }
 
   stages {
-    stage('Checkout') { steps { checkout scm } }
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+
+    stage('Tooling check') {
+      steps {
+        sh '''
+          set -e
+          docker --version
+          echo "Docker OK"
+        '''
+      }
+    }
+
+    stage('Login to ACR') {
+      steps {
+        withCredentials([usernamePassword(
+          credentialsId: params.ACR_CREDENTIALS,
+          usernameVariable: 'REG_USER',
+          passwordVariable: 'REG_PASS'
+        )]) {
+          sh '''
+            set -eu
+            echo "$REG_PASS" | docker login "${ACR_LOGIN_SERVER}" --username "$REG_USER" --password-stdin
+            echo "Authenticated to ${ACR_LOGIN_SERVER}"
+          '''
+        }
+      }
+    }
+
     stage('Build & Push images (parallel)') {
       parallel {
         stage('vote') {
           steps {
-            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+            dir(env.BASE_DIR) {
               sh '''
-                set -e
-                docker build -f "$VOTE_DIR/Dockerfile"   -t "$REGISTRY/vote:$TAG"   -t "$REGISTRY/vote:latest"   "$VOTE_DIR"
-                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
-                docker push "$REGISTRY/vote:$TAG"
-                docker push "$REGISTRY/vote:latest"
-                docker logout "$REGISTRY"
+                set -eu
+                test -d "${APP_DIR}/vote" || { echo "Missing ${APP_DIR}/vote"; exit 1; }
+                docker build -f "${APP_DIR}/vote/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" \
+                  -t "${ACR_LOGIN_SERVER}/vote:latest" \
+                  "${APP_DIR}/vote"
+                docker push "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/vote:latest"
               '''
             }
           }
         }
         stage('worker') {
           steps {
-            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+            dir(env.BASE_DIR) {
               sh '''
-                set -e
-                docker build -f "$WORKER_DIR/Dockerfile" -t "$REGISTRY/worker:$TAG" -t "$REGISTRY/worker:latest" "$WORKER_DIR"
-                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
-                docker push "$REGISTRY/worker:$TAG"
-                docker push "$REGISTRY/worker:latest"
-                docker logout "$REGISTRY"
+                set -eu
+                test -d "${APP_DIR}/worker" || { echo "Missing ${APP_DIR}/worker"; exit 1; }
+                docker build -f "${APP_DIR}/worker/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}" \
+                  -t "${ACR_LOGIN_SERVER}/worker:latest" \
+                  "${APP_DIR}/worker"
+                docker push "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/worker:latest"
               '''
             }
           }
         }
         stage('result') {
           steps {
-            withCredentials([usernamePassword(credentialsId: env.CREDS, usernameVariable: 'U', passwordVariable: 'P')]) {
+            dir(env.BASE_DIR) {
               sh '''
-                set -e
-                docker build -f "$RESULT_DIR/Dockerfile" -t "$REGISTRY/result:$TAG" -t "$REGISTRY/result:latest" "$RESULT_DIR"
-                echo "$P" | docker login "$REGISTRY" -u "$U" --password-stdin
-                docker push "$REGISTRY/result:$TAG"
-                docker push "$REGISTRY/result:latest"
-                docker logout "$REGISTRY"
+                set -eu
+                test -d "${APP_DIR}/result" || { echo "Missing ${APP_DIR}/result"; exit 1; }
+                docker build -f "${APP_DIR}/result/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/result:${IMG_TAG}" \
+                  -t "${ACR_LOGIN_SERVER}/result:latest" \
+                  "${APP_DIR}/result"
+                docker push "${ACR_LOGIN_SERVER}/result:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/result:latest"
               '''
             }
           }
@@ -62,8 +94,14 @@ pipeline {
   }
 
   post {
-    success { echo '✅ Pipeline PASSED' }
-    failure { echo '❌ Pipeline FAILED' }
-    always  { sh 'docker image prune -f || true' }
+    always {
+      sh '''
+        docker logout "${ACR_LOGIN_SERVER}" || true
+        docker image prune -f || true
+      '''
+      echo 'Pipeline finished.'
+    }
+    success { echo '✅ ACR build & push succeeded for vote/worker/result.' }
+    failure { echo '❌ Pipeline FAILED. Most common cause: wrong paths. See stage logs.' }
   }
 }
