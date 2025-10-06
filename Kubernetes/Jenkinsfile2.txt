@@ -53,32 +53,6 @@ pipeline {
     stage('Build & Push images (parallel)') {
       parallel {
 
-        stage('Checkout') {
-          steps {
-            checkout([
-              $class: 'GitSCM',
-              branches: [[name: '*/main']],
-              userRemoteConfigs: [[
-                url: 'https://github.com/bhatti3000/ArslansProjects.git',
-                credentialsId: 'Github_credentials'
-              ]],
-              extensions: [
-                [$class: 'SubmoduleOption',
-                  disableSubmodules: false,
-                  recursiveSubmodules: true,
-                  parentCredentials: true,   // use same creds for private submodules
-                  reference: '',
-                  trackingSubmodules: false,
-                  shallow: false
-                ]
-              ]
-            ])
-            // belt & suspenders:
-            sh 'git submodule update --init --recursive'
-          }
-        }
-
-
 
         stage('vote') {
           steps {
