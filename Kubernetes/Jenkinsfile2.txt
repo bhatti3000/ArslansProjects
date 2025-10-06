@@ -57,10 +57,10 @@ pipeline {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
-                test -d "${APP_DIR}/vote" || { echo "Missing ${APP_DIR}/vote"; exit 1; }
-                docker build -f "${APP_DIR}/vote/Dockerfile" \
+                test -d "AppHTML/vote" || { echo "Missing AppHTML/vote"; exit 1; }
+                docker build -f "AppHTML/vote/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/vote:latest" \
-                  "${APP_DIR}/vote"
+                  "AppHTML/vote"
                 docker push "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/vote:latest"
               '''
@@ -72,10 +72,10 @@ pipeline {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
-                test -d "${APP_DIR}/worker" || { echo "Missing ${APP_DIR}/worker"; exit 1; }
-                docker build -f "${APP_DIR}/worker/Dockerfile" \
+                test -d "AppHTML/worker" || { echo "Missing AppHTML/worker"; exit 1; }
+                docker build -f "AppHTML/worker/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/worker:latest" \
-                  "${APP_DIR}/worker"
+                  "AppHTML/worker"
                 docker push "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/worker:latest"
               '''
