@@ -11,7 +11,7 @@ pipeline {
     IMG_TAG          = "build-${env.BUILD_NUMBER}"
     BASE_DIR         = '.'
     APP_DIR          = '/AppHTML'
-    // 👇 make the param available to /bin/sh as $ACR_LOGIN_SERVER
+    //  make the param available to /bin/sh as $ACR_LOGIN_SERVER
     ACR_LOGIN_SERVER = "${params.ACR_LOGIN_SERVER}"
   }
 
@@ -57,10 +57,19 @@ pipeline {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
+                WORKDIR="AppHTML/vote"
+                test -d "$WORKDIR" || { echo "Missing $WORKDIR"; exit 1; }
+
+                docker build -f "$WORKDIR/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" \
+                  -t "${ACR_LOGIN_SERVER}/vote:latest" \
+                  "$WORKDIR"
+                /*
                 test -d "${APP_DIR}/vote" || { echo "Missing ${APP_DIR}/vote"; exit 1; }
                 docker build -f "${APP_DIR}/vote/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/vote:latest" \
                   "${APP_DIR}/vote"
+                */
                 docker push "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/vote:latest"
               '''
