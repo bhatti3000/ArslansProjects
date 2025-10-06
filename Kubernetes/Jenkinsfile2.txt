@@ -76,22 +76,24 @@ pipeline {
           }
         }
         
-        /*
+        
         stage('worker') {
           steps {
             dir(env.BASE_DIR) {
               sh '''
                 set -eu
-                test -d "${APP_DIR}/worker" || { echo "Missing ${APP_DIR}/worker"; exit 1; }
-                docker build -f "${APP_DIR}/worker/Dockerfile" \
+                WORKDIR="Kubernetes/AppHTML/worker"
+                test -d "${WORKDIR}" || { echo "Missing ${WORKDIR}rker"; exit 1; }
+                docker build -f "${WORKDIR}/Dockerfile" \
                   -t "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/worker:latest" \
-                  "${APP_DIR}/worker"
+                  "${WORKDIR}"
                 docker push "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}"
                 docker push "${ACR_LOGIN_SERVER}/worker:latest"
               '''
             }
           }
         }
+        /*
         stage('result') {
           steps {
             dir(env.BASE_DIR) {
