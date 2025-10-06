@@ -60,7 +60,7 @@ pipeline {
             {
               sh '''
                 set -eu
-                WORKDIR="AppHTML/vote"
+                WORKDIR="Kubernetes/AppHTML/vote"
                 test -d "$WORKDIR" || { echo "Missing $WORKDIR"; exit 1; }
 
                 /*
