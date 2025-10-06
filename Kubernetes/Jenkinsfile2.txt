@@ -10,7 +10,7 @@ pipeline {
   environment {
     IMG_TAG          = "build-${env.BUILD_NUMBER}"
     BASE_DIR         = '.'
-    APP_DIR          = '/AppHTML'
+    APP_DIR          = 'Kubernetes/AppHTML'
     //  make the param available to /bin/sh as $ACR_LOGIN_SERVER
     ACR_LOGIN_SERVER = "${params.ACR_LOGIN_SERVER}"
   }
@@ -93,7 +93,7 @@ pipeline {
             }
           }
         }
-        /*
+        
         stage('result') {
           steps {
             dir(env.BASE_DIR) {
@@ -109,7 +109,7 @@ pipeline {
             }
           }
         }
-        */
+        
       }
     }
   }
