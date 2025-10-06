@@ -1,20 +1,5 @@
-pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'make build'
-      }
-    }
-    stage('Test') {
-      steps {
-        sh 'make test'
-      }
-    }
-  }
-  post {
-    always {
-      echo 'Pipeline finished'
-    }
+stage('Build') {
+  steps {
+    sh './build.sh'   // or: mvn -B -DskipTests package | gradle build | npm ci && npm run build
   }
 }
