@@ -4,8 +4,8 @@ pipeline {
 
   parameters {
     string(name: 'ACR_LOGIN_SERVER',
-           defaultValue: 'myregistry.azurecr.io',
-           description: 'Your ACR login server, e.g. myregistry.azurecr.io')
+           defaultValue: 'bhattiacr20314.azurecr.io',
+           description: 'Your ACR login server, e.g. bhattiacr20314.azurecr.io')
 
     // Create a Jenkins credential (Kind: Username with password) that can docker-login to ACR,
     // then set its ID as the defaultValue below (e.g., "acr-creds")
