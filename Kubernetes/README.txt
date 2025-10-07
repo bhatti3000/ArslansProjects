@@ -63,7 +63,13 @@ Deployment Procedure for Azure Kubernetes Service (AKS)
 kubectl get service vote
 The application was confirmed operational by accessing it through a web browser at the provided endpoint (<IP-Address>:<port>).
 
+Construction of CI/CD Pipeline:
+-------------------------------
+1. Provisioned a Jenkins virtual machine in Azure.
 
+2. Installed and configured Docker on the Jenkins instance.
+
+3. Integrated GitHub credentials into Jenkins for source control access.
+
+4. Wrote and successfully executed a Groovy-based pipeline to automate the build process.
    
-
-This project was made according to Udemy course "Kubernetes for the Absolute Beginners - Hands-on"
