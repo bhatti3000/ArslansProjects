@@ -72,7 +72,4 @@ Construction of CI/CD Pipeline:
 3. Integrated GitHub credentials into Jenkins for source control access.
 
 4. Wrote and successfully executed a Groovy-based pipeline to automate the build process.
-
    
-
-This project was made according to Udemy course "Kubernetes for the Absolute Beginners - Hands-on"
