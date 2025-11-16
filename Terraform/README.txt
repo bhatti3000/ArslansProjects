@@ -10,6 +10,8 @@ What This Project Does:
 
 - Produces a working static website URL through S3
 
+- Any change in the webiste was observed in the bucket as well
+
 Purpose of This Project:
 ------------------------
 - This repository demonstrates:
