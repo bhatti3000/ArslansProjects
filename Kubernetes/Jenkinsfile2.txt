@@ -1,0 +1,129 @@
+pipeline {
+  agent any
+  options { timestamps(); skipDefaultCheckout(true) }
+
+  parameters {
+    string(name: 'ACR_LOGIN_SERVER',  defaultValue: 'bhattiacr20314.azurecr.io', description: 'e.g. myregistry.azurecr.io')
+    string(name: 'ACR_CREDENTIALS_ID', defaultValue: 'acr-creds', description: 'Jenkins Credentials ID (Username/Password) with AcrPush')
+  }
+
+  environment {
+    IMG_TAG          = "build-${env.BUILD_NUMBER}"
+    BASE_DIR         = '.'
+    APP_DIR          = 'Kubernetes/AppHTML'
+    //  make the param available to /bin/sh as $ACR_LOGIN_SERVER
+    ACR_LOGIN_SERVER = "${params.ACR_LOGIN_SERVER}"
+  }
+
+  stages {
+    stage('Checkout') { steps { checkout scm } }
+
+    stage('Tooling check') {
+      steps {
+        sh '''
+          set -e
+          docker --version
+          echo "Docker OK. Using registry: ${ACR_LOGIN_SERVER}"
+        '''
+      }
+    }
+
+    stage('Validate inputs') {
+      steps {
+        script {
+          if (!env.ACR_LOGIN_SERVER?.trim()) error 'ACR_LOGIN_SERVER is empty'
+          if (!params.ACR_CREDENTIALS_ID?.trim()) error 'ACR_CREDENTIALS_ID is empty'
+        }
+      }
+    }
+
+    stage('Login to ACR') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: params.ACR_CREDENTIALS_ID,
+                          usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
+          sh '''
+            set -eu
+            echo "$REG_PASS" | docker login "${ACR_LOGIN_SERVER}" --username "$REG_USER" --password-stdin
+            echo "Authenticated to ${ACR_LOGIN_SERVER}"
+          '''
+        }
+      }
+    }
+
+    stage('Build & Push images (parallel)') {
+      parallel {
+
+
+        stage('vote') {
+          steps {
+            dir(env.BASE_DIR) 
+            {
+              sh '''
+                set -eu
+                WORKDIR="Kubernetes/AppHTML/vote"
+                test -d "$WORKDIR" || { echo "Missing $WORKDIR"; exit 1; }
+
+
+                docker build -f "${WORKDIR}/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/vote:latest" \
+                  "${WORKDIR}"
+                
+                docker push "${ACR_LOGIN_SERVER}/vote:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/vote:latest"
+                
+              '''
+            }
+          }
+        }
+        
+        
+        stage('worker') {
+          steps {
+            dir(env.BASE_DIR) {
+              sh '''
+                set -eu
+                WORKDIR="Kubernetes/AppHTML/worker"
+                test -d "${WORKDIR}" || { echo "Missing ${WORKDIR}rker"; exit 1; }
+                docker build -f "${WORKDIR}/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/worker:latest" \
+                  "${WORKDIR}"
+                docker push "${ACR_LOGIN_SERVER}/worker:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/worker:latest"
+              '''
+            }
+          }
+        }
+        
+        stage('result') {
+          steps {
+            dir(env.BASE_DIR) {
+              sh '''
+                set -eu
+                test -d "${APP_DIR}/result" || { echo "Missing ${APP_DIR}/result"; exit 1; }
+                docker build -f "${APP_DIR}/result/Dockerfile" \
+                  -t "${ACR_LOGIN_SERVER}/result:${IMG_TAG}" -t "${ACR_LOGIN_SERVER}/result:latest" \
+                  "${APP_DIR}/result"
+                docker push "${ACR_LOGIN_SERVER}/result:${IMG_TAG}"
+                docker push "${ACR_LOGIN_SERVER}/result:latest"
+              '''
+            }
+          }
+        }
+        
+      }
+    }
+  }
+
+  post {
+    always {
+      sh '''
+        set -e
+        docker logout "${ACR_LOGIN_SERVER}" || true
+        docker image prune -f || true
+      '''
+      echo 'Pipeline finished.'
+    }
+    success { echo '✅ ACR build & push succeeded for vote/worker/result.' }
+    failure { echo '❌ Pipeline FAILED. See stage logs (credentials/paths are common causes).' }
+  }
+}
