@@ -1,0 +1,56 @@
+- name: Set hostnames on servers
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Load variables
+      include_vars: /home/ec2-user/Ansible/playbooks/roles/webservers/vars/main.yml
+
+    - name: Set a hostname for LinuxMachine-1 machine
+      ansible.builtin.hostname:
+        name: web01
+      when: inventory_hostname == 'LinuxMachine-1'
+
+    - name: Set a hostname for WebServer02 machine
+      ansible.builtin.hostname:
+        name: web02
+      when: inventory_hostname == 'WebServer02'
+
+    - name: Install web server on LinuxMachine-1 machine
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+      when: inventory_hostname == 'LinuxMachine-1'
+
+    - name: Install web server on WebServer02 machine
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+        update_cache: yes
+      when: inventory_hostname == 'WebServer02'
+
+    - name: Start web server on LinuxMachine-1
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+      when: inventory_hostname == 'LinuxMachine-1'
+
+    - name: Start web server on WebServer02
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+      when: inventory_hostname == 'WebServer02'
+
+    - name: Deploy index.html on WebServer02
+      ansible.builtin.copy:
+        src: /home/ec2-user/Ansible/index.html
+        dest: /var/www/html/index.html
+      when: inventory_hostname == 'WebServer02'
+
+    - name: Install packages on LinuxMachine-1
+      ansible.builtin.yum:
+        name: "{{ centos_packages }}"
+        state: present
+      when: inventory_hostname == 'LinuxMachine-1'
