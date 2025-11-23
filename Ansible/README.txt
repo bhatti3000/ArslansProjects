@@ -1,6 +1,6 @@
 1. AWS EC2 Setup
 
-LinuxMachine-1 (Target Server)
+LinuxMachine-1
 - Default user: ec2-user
 - SSH connection example:
   ssh -i LinuxMachine1 ec2-user@<public-dns>
