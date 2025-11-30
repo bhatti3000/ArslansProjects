@@ -67,3 +67,5 @@ ansible-playbook playbooks/setup_servers.yml -i inventory/hosts.yml
 
 6. HTML Deployment
 An index.html file was created and copied into the Ansible folder to be deployed to the target web server as part of the automation workflow.
+
+***SEE THE VIDOE IN FOLDER AS WELL***
