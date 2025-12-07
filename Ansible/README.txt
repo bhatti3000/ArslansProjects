@@ -56,7 +56,7 @@ children:
 5. Ansible Playbook (setup_servers.yml)
 A playbook was written to manage hostnames and perform basic server setup:
 
-Example Tasks:
+Example Task run:
 - Set hostname for each machine
 - Install required packages
 - Start web services
@@ -68,4 +68,4 @@ ansible-playbook playbooks/setup_servers.yml -i inventory/hosts.yml
 6. HTML Deployment
 An index.html file was created and copied into the Ansible folder to be deployed to the target web server as part of the automation workflow.
 
-***SEE THE VIDOE IN FOLDER AS WELL***
+***SEE THE VIDOE "Video_demonstration.mp4" IN FOLDER AS WELL***
