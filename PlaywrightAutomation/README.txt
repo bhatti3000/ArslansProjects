@@ -1,4 +1,4 @@
-Playwright To-Do App Automation
+Playwright to do App Automation
 
 This project demonstrates end-to-end test automation for a sample To-Do web application
 using Playwright. The workflow is based on the tutorial video that explains how to set up
@@ -22,9 +22,9 @@ Requirements:
 
 How to run:
 1. Install dependencies with:  npm install
-2. Run tests with:  npx playwright test
+2. Run tests with: npx playwright test
 
 This mini project helps to understand test structuring, selectors, and interaction 
 handling in Playwright.
 
-***PLEASE SEE THE VIDEO AS WELL***
+***PLEASE SEE THE VIDEO "Video_Demonstration.mp4" AS WELL***
