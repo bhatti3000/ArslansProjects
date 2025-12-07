@@ -1,6 +1,6 @@
 What This Project Does:
 -------------------------
-- Creates an S3 bucket using Terraform
+- Creates an S3 bucket using Terraform in AWS
 
 - Uploads index.html, error.html, and image assets
 
