@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Chrome (7498) UiPath Beginners Course - How t",
+  "Type": "Screen",
+  "Id": "a7U3of0LPU2ULgvfl0mlFA",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/a7U3of0LPU2ULgvfl0mlFA",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/avZWzMcOQUWYvrcyWAr1mQ",
+  "Created": "2026-02-07T09:43:34.199224Z",
+  "Updated": "2026-02-07T09:43:34.199224Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

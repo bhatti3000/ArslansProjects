@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Type Email m_a_majid88@yahoo.com",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "fw6F1oZWy0e4f3JmqV1cwQ",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/fw6F1oZWy0e4f3JmqV1cwQ",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/sPsvlM7ZREK4rfM35gZkOg",
+  "Created": "2026-02-07T10:21:16.3844097Z",
+  "Updated": "2026-02-07T10:21:16.3844097Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

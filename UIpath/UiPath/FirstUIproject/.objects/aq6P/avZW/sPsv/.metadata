@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Chrome Volkswagen Infotainment GmbH  Udemy Bu",
+  "Type": "Screen",
+  "Id": "sPsvlM7ZREK4rfM35gZkOg",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/sPsvlM7ZREK4rfM35gZkOg",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/avZWzMcOQUWYvrcyWAr1mQ",
+  "Created": "2026-02-07T10:05:47.5432555Z",
+  "Updated": "2026-02-07T10:05:47.5432555Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

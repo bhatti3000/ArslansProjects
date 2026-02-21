@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="rfxWmAj5Ik2L2A1N-Fm3kA" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="global.jdsports.com/search/Tracksuits" CVScreenId="3cf951d2-15e4-4a9d-80f0-f5d2e1721550" CvElementArea="987, 168, 309, 41" CvType="InputBox" DesignTimeRectangle="987, 169, 310, 40" ElementType="InputBox" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl id='srchInput' tag='INPUT' /&gt;" Guid="0d1e6c8c-e39c-4acd-a1f8-a483214130de" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Tracksuits - JD Sports Global' /&gt;" SearchSteps="Selector, CV" Version="V6" WaitForReadyArgument="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="12bfca16027f4631b86e071dfc223ed6.png" xmlns="">0aP8s6VnFFk6cSQoy1uSJ0A</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">TypeInto</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

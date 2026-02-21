@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="eCUfYNrFAEi3cXUMKsRWEg" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="global.jdsports.com/search/Tracksuits" CVScreenId="da3d2c04-3928-4ffc-a052-1d8b52f38f2c" CvElementArea="526, 327, 39, 39" CvType="Button" DesignTimeRectangle="544, 340, 5, 14" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl parentid='/search/Tracksuits/?from=72' tag='I' /&gt;" Guid="ea049472-dbdd-4d75-8459-d624f7055067" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Tracksuits - JD Sports Global' /&gt;" SearchSteps="Selector, CV" Version="V6" WaitForReadyArgument="Interactive">
+      <TargetAnchorable.Anchors>
+        <scg:List x:TypeArguments="ITarget" Capacity="4">
+          <Target CVScreenId="da3d2c04-3928-4ffc-a052-1d8b52f38f2c" CvElementArea="526, 327, 39, 39" CvType="Button" DesignTimeRectangle="528, 328, 36, 36" FullSelectorArgument="&lt;webctrl aaname='Next Page' id='/search/Tracksuits/?from=72' tag='A' /&gt;" Guid="8ec8b913-eb5f-496d-b332-1c3605d43bca" SearchSteps="Selector, CV" />
+        </scg:List>
+      </TargetAnchorable.Anchors>
+      <imageRef attrName="InformativeScreenshot" originalValue="bfcffb1736417054f85bb22b9e46464a.png" xmlns="">0alCb4nKgQEKhFNN_Teu2fA</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">Click</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Chrome (7498) UiPath Beginners Course - How to Get Started - YouTube",
+  "Type": "App",
+  "Id": "aq6P6iSFz0KuaxX2Z_JbIw",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/aq6P6iSFz0KuaxX2Z_JbIw",
+  "Created": "2026-02-07T09:43:33.7404726Z",
+  "Updated": "2026-02-07T09:43:33.7404726Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

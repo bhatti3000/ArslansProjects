@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="JNQIVE1wiEGLT0qj0b7wNg" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="global.jdsports.com/search/Nike" CVScreenId="aa63695d-23d8-4779-b40e-8061a0db182c" CvElementArea="690, 468, 39, 39" CvType="Button" DesignTimeRectangle="692, 469, 36, 36" ElementVisibilityArgument="Interactive" FullSelectorArgument="&lt;webctrl aaname='Next Page' id='/search/Nike/?from=144' tag='A' /&gt;" Guid="c75dc111-bf04-44cb-9e78-30f915c9a2d1" ScopeSelectorArgument="&lt;html app='msedge.exe' title='2 - 34 | Nike - JD Sports Global' /&gt;" SearchSteps="Selector, CV" Version="V6" WaitForReadyArgument="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="8151cd4a737806ab038a118ca5863f5e.png" xmlns="">0KpFMAsHhGkylOscBYtnHkQ</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">Click</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>

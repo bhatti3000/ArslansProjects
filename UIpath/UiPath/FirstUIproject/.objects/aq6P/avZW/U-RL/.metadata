@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Chrome Tracksuits - JD Sports Global",
+  "Type": "Screen",
+  "Id": "U-RLsUXtvECfMoQlhegRdA",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/U-RLsUXtvECfMoQlhegRdA",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/avZWzMcOQUWYvrcyWAr1mQ",
+  "Created": "2026-02-08T12:44:34.6904909Z",
+  "Updated": "2026-02-08T12:44:34.6904909Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

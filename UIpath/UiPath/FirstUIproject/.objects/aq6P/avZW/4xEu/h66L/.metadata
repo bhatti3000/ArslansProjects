@@ -1,0 +1,14 @@
+﻿{
+  "Name": "INPUT srchInput",
+  "Type": "Element",
+  "TaxonomyType": "Input",
+  "Id": "h66Ljdhk_EiB35TZU4vX6g",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/h66Ljdhk_EiB35TZU4vX6g",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/4xEuBUN9eE2zamHxmXVygw",
+  "Created": "2026-02-07T19:16:22.0585141Z",
+  "Updated": "2026-02-07T19:16:22.0585141Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

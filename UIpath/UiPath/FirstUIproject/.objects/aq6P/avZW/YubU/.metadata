@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Chrome nike - JD Sports Global",
+  "Type": "Screen",
+  "Id": "YubU0jPID0mF52Tn1pfQyg",
+  "Reference": "lteqSvDrq0Ol1l8YNUd0VA/YubU0jPID0mF52Tn1pfQyg",
+  "ParentRef": "lteqSvDrq0Ol1l8YNUd0VA/avZWzMcOQUWYvrcyWAr1mQ",
+  "Created": "2026-02-08T13:04:30.6458196Z",
+  "Updated": "2026-02-08T13:04:30.6458196Z",
+  "CreatedBy": [
+    "UiPath.UIAutomationCore, Version=25.10.22.0, Culture=neutral, PublicKeyToken=null",
+    "UiPath.Platform, Version=25.12.1.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}

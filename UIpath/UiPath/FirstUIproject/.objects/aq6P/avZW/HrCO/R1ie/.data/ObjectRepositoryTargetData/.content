@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ObjectRepositoryTargetData ContentHash="kL_FlzjeQUmP0oNOC1IyPQ" xmlns="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ObjectRepositoryTargetData.Data>
+    <TargetAnchorable x:Key="TargetAnchorable" BrowserURL="global.jdsports.com/search/Nike" DesignTimeRectangle="692, 202, 36, 36" FullSelectorArgument="&lt;webctrl aaname='Next Page' id='/search/Nike/?from=72' tag='A' /&gt;" Guid="064d9387-9b43-46d7-88cc-5496ab28c454" ScopeSelectorArgument="&lt;html app='msedge.exe' title='Nike - JD Sports Global' /&gt;" SearchSteps="Selector" Version="V6" WaitForReadyArgument="Interactive">
+      <imageRef attrName="InformativeScreenshot" originalValue="16cf3c86de34aa37fa33fc0fe382ad2a.png" xmlns="">01v-D-bE1AUS6mfqHDhguiA</imageRef>
+    </TargetAnchorable>
+    <x:String x:Key="ActivityType">ClickTrigger</x:String>
+  </ObjectRepositoryTargetData.Data>
+</ObjectRepositoryTargetData>
