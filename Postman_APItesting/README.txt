@@ -111,4 +111,7 @@ This project was created to practice:
 ## Author
 
 **Muhammad Arslan Majid**
+<<<<<<< HEAD
 
+=======
+>>>>>>> 05430b5 (Update README and Postman files)
