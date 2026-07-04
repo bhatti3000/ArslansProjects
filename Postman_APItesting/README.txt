@@ -64,13 +64,6 @@ npm install
 
 ```bash
 node index.js
-```
-
-The server starts locally on:
-
-```
-http://localhost:3000
-```
 
 ---
 
@@ -87,25 +80,6 @@ The tests verify:
 - CRUD functionality
 - Environment variables
 - Dynamic Todo ID storage
-
-Example:
-
-```javascript
-pm.test("Todo created successfully", function () {
-    pm.response.to.have.status(201);
-});
-
-pm.test("Response contains required fields", function () {
-    const response = pm.response.json();
-
-    pm.expect(response).to.have.property("id");
-    pm.expect(response).to.have.property("title");
-    pm.expect(response).to.have.property("completed");
-    pm.expect(response).to.have.property("userId");
-});
-
-pm.environment.set("todoId", response.id);
-```
 
 ---
 
@@ -138,6 +112,3 @@ This project was created to practice:
 
 **Muhammad Arslan Majid**
 
-GitHub: https://github.com/yourusername
-
-LinkedIn: https://linkedin.com/in/muhammad-arslan-majid
